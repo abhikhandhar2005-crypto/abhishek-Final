@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        /* Additional styles for the cart page */
+        body {
+            background: var(--color-bg-muted);
+            color: var(--color-text-dark);
+            font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+        }
+        header {
+            text-align: center;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: #fff;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: var(--color-primary);
+            color: var(--color-bg-light);
+        }
+        .cart-summary {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            text-align: right;
+        }
+        .cart-summary button {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .cart-summary button:hover {
+            background: var(--color-primary-hover);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Shopping Cart</h1>
+    </header>
+    <main>
+        <table id="cartTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Product Name</td>
+                    <td><input type="number" value="1" min="1" onchange="updateTotal(this)"></td>
+                    <td class="price">$10.00</td>
+                    <td class="total">$10.00</td>
+                    <td><button onclick="removeItem(this)">Remove</button></td>
+                </tr>
+                <!-- Add more product rows as needed -->
+            </tbody>
+        </table>
+        <div class="cart-summary">
+            <p id="totalAmount">Total: $10.00</p>
+            <button>Checkout</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Your Company</p>
+    </footer>
+    <script>
+        function updateTotal(input) {
+            const row = input.closest('tr');
+            const price = parseFloat(row.querySelector('.price').textContent.replace('$', ''));
+            const quantity = input.value;
+            const total = (price * quantity).toFixed(2);
+            row.querySelector('.total').textContent = `$${total}`;
+            calculateGrandTotal();
+        }
+
+        function removeItem(button) {
+            const row = button.closest('tr');
+            row.remove();
+            calculateGrandTotal();
+        }
+
+        function calculateGrandTotal() {
+            const totals = document.querySelectorAll('.total');
+            let grandTotal = 0;
+            totals.forEach(total => {
+                grandTotal += parseFloat(total.textContent.replace('$', ''));
+            });
+            document.getElementById('totalAmount').textContent = `Total: $${grandTotal.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
